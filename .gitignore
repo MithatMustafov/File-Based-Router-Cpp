@@ -1,0 +1,5 @@
+# ingnore
+.git
+.vs
+/x64/Debug/FileBasedRouter.exe
+/x64/Debug/FileBasedRouter.pdb
