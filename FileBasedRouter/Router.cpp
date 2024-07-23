@@ -4,6 +4,14 @@
 #include <filesystem>
 #include <map>
 
+void Router::help()
+{
+    std::cout << lineColor.WHITE
+        << "[-] help menu"
+        << std::endl
+        << lineColor.RESET;
+}
+
 void Router::autoSetUp(Router router, const std::string& pathRouters)
 {
     router.initialize();
@@ -43,11 +51,7 @@ bool Router::load(const std::string& pathRouters)
     }
     catch (const fs::filesystem_error& error)
     {
-        std::cerr << lineColor.RED
-            << "[!] Filesystem error: "
-            << error.what()
-            << lineColor.RESET
-            << std::endl;
+        handleError(error);
         return false;
     }
 }
@@ -69,11 +73,7 @@ bool Router::checkDir(const std::string& pathRouters)
     }
     catch (const fs::filesystem_error& error)
     {
-        std::cerr << lineColor.RED
-            << "[!] Filesystem error: "
-            << error.what()
-            << lineColor.RESET
-            << std::endl;
+        handleError(error);
         return false;
     }
 }
@@ -85,4 +85,58 @@ bool Router::add(const std::string& path, const std::string& filePath)
         << "[-] " << path << " -> " << filePath << "\n"
         << lineColor.RESET;
     return true;
+}
+
+
+void Router::create(const std::string& path, const std::string& filePath)
+{
+    std::ofstream outfile(filePath);
+    if (outfile.is_open())
+    {
+        routes[path] = filePath;
+        outfile.close();
+        std::cout << lineColor.GREEN
+            << "[-] File created: " << filePath << "\n"
+            << lineColor.RESET;
+    }
+    else
+    {
+        std::cerr << lineColor.RED
+            << "[!] Failed to create file: " << filePath << "\n"
+            << lineColor.RESET;
+    }
+}
+
+void Router::remove(const std::string& path, const std::string& filePath)
+{
+    namespace fs = std::filesystem;
+    try
+    {
+        if (fs::remove(filePath))
+        {
+            routes.erase(path);
+            std::cout << lineColor.GREEN
+                << "[-] File deleted: " << filePath << "\n"
+                << lineColor.RESET;
+        }
+        else
+        {
+            std::cerr << lineColor.RED
+                << "[!] Failed to delete file: " << filePath << "\n"
+                << lineColor.RESET;
+        }
+    }
+    catch (const fs::filesystem_error& error)
+    {
+        handleError(error);
+    }
+}
+
+void Router::handleError(const std::filesystem::filesystem_error& error)
+{
+    std::cerr << lineColor.RED
+        << "[!] Filesystem error: "
+        << error.what()
+        << lineColor.RESET
+        << std::endl;
 }

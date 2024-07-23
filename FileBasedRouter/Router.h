@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <filesystem>
 
 struct RouterRequest
 {
@@ -35,12 +36,16 @@ class Router
         LineColor lineColor;
         std::map<std::string, std::string> routes;
         bool checkDir(const std::string& configFilePath);
+        bool add(const std::string& path, const std::string& filePath);
+        void handleError(const std::filesystem::filesystem_error& fsError);
 
 
     public:
+        void help();
         void autoSetUp(Router router, const std::string& pathRouters);
         void initialize();
         bool load(const std::string& configFilePath);
-        bool add(const std::string& path, const std::string& filePath);
+        void create(const std::string& path, const std::string& filePath);
+        void remove(const std::string& path, const std::string& filePath);
 };
 
