@@ -37,7 +37,8 @@ class Router
         std::map<std::string, std::string> routes;
         bool checkDir(const std::string& configFilePath);
         bool add(const std::string& path, const std::string& filePath);
-        void handleError(const std::filesystem::filesystem_error& fsError);
+        //this doesnt work ->
+        void handleError(const std::fs::filesystem_error& fsError);
 
 
     public:
