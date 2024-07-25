@@ -132,9 +132,7 @@ void Router::remove(const std::string& path, const std::string& filePath)
     }
 }
 
-
-//this doesnt work ->
-void Router::handleError(const std::filesystem::filesystem_error& fsError)
+void Router::handleError(const fs::filesystem_error& fsError)
 {
     std::cerr << lineColor.RED
         << "[!] Filesystem error: "

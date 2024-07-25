@@ -16,7 +16,7 @@ struct RouterResponse
     int status;
     std::string body;
 };
-
+namespace fs = std::filesystem;
 
 struct LineColor
 {
@@ -37,8 +37,7 @@ class Router
         std::map<std::string, std::string> routes;
         bool checkDir(const std::string& configFilePath);
         bool add(const std::string& path, const std::string& filePath);
-        //this doesnt work ->
-        void handleError(const std::fs::filesystem_error& fsError);
+        void handleError(const fs::filesystem_error& error);
 
 
     public:
